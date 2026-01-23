@@ -1,17 +1,68 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import "./App.css";
+import { AuthProvider, useAuth } from "./Context/AuthContext";
+import Dashboard from "./Pages/Dashboard";
+import Pricing from "./Pages/Pricing";
+import LoginPage from "./Pages/LoginPage";
+import LessonPage from "./Pages/Lesson";
+import LessonCard from "./Components/LessonCard";
+import OAuthSuccess from "./Pages/OAuthSuccess";
 
-import LoginPage from './Pages/LoginPage';
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth();
+
+  if (loading) return <div>Loading...</div>;
+  if (!user) return <Navigate to="/login" />;
+
+  return children;
+}
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="App">
+    <AuthProvider>
+      <Router>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/oauth-success" element={<OAuthSuccess />} />
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+<Route
+  path="/lessons/:level"
+  element={
+    <ProtectedRoute>
+      <LessonPage />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/lessons/:level/:dayNumber"
+  element={
+    <ProtectedRoute>
+      <LessonCard />
+    </ProtectedRoute>
+  }
+/>
+
+          <Route
+            path="/pricing"
+            element={
+              <ProtectedRoute>
+                <Pricing />
+              </ProtectedRoute>
+            }
+          />
+          
         </Routes>
-      </div>
-    </BrowserRouter>
+      </Router>
+    </AuthProvider>
   );
 }
 

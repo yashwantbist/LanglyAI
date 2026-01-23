@@ -16,13 +16,14 @@ const lessonProgressSchema = new mongoose.Schema(
     },
 
     dayNumber: {
-      type: Number, // 1 → 120
+      type: Number,
       required: true,
     },
 
     lessonId: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Lessonai",
+      required: false,
     },
 
     completed: {
@@ -51,13 +52,13 @@ const lessonProgressSchema = new mongoose.Schema(
       type: Date,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Prevent duplicate progress for same lesson/day
 lessonProgressSchema.index(
   { user: 1, level: 1, dayNumber: 1 },
-  { unique: true }
+  { unique: true },
 );
 
 export default mongoose.model("LessonProgress", lessonProgressSchema);

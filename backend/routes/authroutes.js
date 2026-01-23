@@ -69,19 +69,20 @@ router.post("/login", async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ message: "Login failed" });
+res.status(400).json({ message: "All fields required" });
   }
 });
 
 // Google OAuth
-router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+router.get("/google", (req, res, next) => {
+  console.log("✅ /api/auth/google hit");
+  next();
+}, passport.authenticate("google", { scope: ["profile", "email"] }));
+
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { session: false }),
+  passport.authenticate("google", { session: false, failureRedirect: `${process.env.FRONTEND_URL}/login`}),
   (req, res) => {
     const token = generateToken(req.user._id);
     res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);

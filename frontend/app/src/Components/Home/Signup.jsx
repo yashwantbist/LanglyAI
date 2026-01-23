@@ -3,61 +3,66 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
-  const [FormData, setFormData] = useState({
-    name: " ",
-    email: " ",
+  const [formData, setformData] = useState({
+    name: "",
+    email: "",
     password: "",
   });
+
   const navigate = useNavigate();
 
-  //handle change function
   const handleChange = (e) => {
-    setFormData({ ...FormData, [e.target.name]: e.target.value });
+    setformData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  //handle signup form
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/auth/signup", FormData, {
-        withCredentials: true,
-      });
-      alert("Signup Successful.Please login");
-      navigate("/Login");
+      await axios.post(
+        "http://localhost:5000/api/auth/signup",
+        formData,
+        { withCredentials: true }
+      );
+
+      alert("Signup successful. Please login.");
+      navigate("/login");
     } catch (err) {
-      alert("Error signing up:" + (err.response?.data?.error || err.message));
+      alert(
+        "Error signing up: " +
+          (err.response?.data?.message || err.message)
+      );
     }
   };
 
   return (
     <div className="signup">
-      <h2>SignUp</h2>
+      <h2>Sign Up</h2>
       <form onSubmit={handleSignup}>
         <input
           type="text"
           name="name"
-          placeholder="name"
+          placeholder="Name"
+          value={formData.name}
           onChange={handleChange}
-          value={FormData.name}
           required
         />
         <input
-          type="text"
+          type="email"
           name="email"
           placeholder="Email"
+          value={formData.email}
           onChange={handleChange}
-          value={FormData.email}
           required
         />
         <input
           type="password"
           name="password"
           placeholder="Password"
+          value={formData.password}
           onChange={handleChange}
-          value={FormData.password}
           required
         />
-        <button type="submit"> Create my account</button>
+        <button type="submit">Create my account</button>
       </form>
     </div>
   );

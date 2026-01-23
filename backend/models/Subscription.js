@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import User from "./User";
+import User from "./User.js";
 
 const subscriptionSchema = new mongoose.Schema(
   {
@@ -11,7 +11,7 @@ const subscriptionSchema = new mongoose.Schema(
     },
     stripeSubscriptionId: {
       type: String,
-      required: true,
+      default: null, 
     },
     plan: {
       type: String,
@@ -20,20 +20,14 @@ const subscriptionSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["active", "past_due", "canceled", "incomplete"],
-      default: "active",
+      enum: ["inactive", "active", "past_due", "canceled", "incomplete"],
+      default: "inactive",
     },
-    currentPeriodStart: {
-      type: Date,
-    },
-    currentPeriodEnd: {
-      type: Date,
-    },
-    cancelAtPeriodEnd: {
-      type: Boolean,
-      default: false,
-    },
+    currentPeriodStart: Date,
+    currentPeriodEnd: Date,
+    cancelAtPeriodEnd: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
+
 export default mongoose.model("Subscription", subscriptionSchema);
