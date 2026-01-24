@@ -1,7 +1,12 @@
-FROM node:20 
-WORKDIR /app
+FROM node:18
+
+WORKDIR /server
+
 COPY package*.json ./
 RUN npm install
+
 COPY . .
+
 EXPOSE 5000
-CMD ["pm2-runtime", "index.js"]
+
+CMD ["npm", "run", "dev"]
