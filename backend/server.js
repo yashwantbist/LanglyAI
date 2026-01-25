@@ -14,7 +14,25 @@ import "./config/passport.js";
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://3.80.76.25",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow requests with no origin (like curl, server-to-server)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS: " + origin));
+    },
+    credentials: true,
+  }),
+);
 
 //  Webhook must be raw + must be a real handler
 app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
@@ -29,8 +47,13 @@ app.use(
     secret: process.env.SESSION_SECRET || "keyboardcat",
     resave: false,
     saveUninitialized: true,
+    cookie: {
+      sameSite: "lax",
+      secure: false, 
+    },
   }),
 );
+
 
 app.use(passport.initialize());
 app.use(passport.session());
