@@ -1,12 +1,11 @@
-FROM node:18
+FROM node:18-alpine
 
 WORKDIR /server
 
-COPY package*.json ./
-RUN npm install
+COPY package.json package-lock.json* ./
+RUN npm ci --omit=dev
 
 COPY . .
 
 EXPOSE 5000
-
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]
