@@ -25,7 +25,7 @@ jobs:
 
       - name: Build & push frontend image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/langlyai-frontend:latest ./frontend
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/langlyai-frontend:latest ./frontend/app
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/langlyai-frontend:latest
 
       - name: Deploy on EC2
