@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 import axios from "axios";
-
+import API from "../API/api";
 
 const Plan = ["A1", "A2", "B1", "B2"];
 
@@ -19,8 +19,8 @@ export default function Pricing() {
     setSubscribing(true);
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/stripe/create-checkout-session",
+      const res = await API.post(
+        "/api/stripe/create-checkout-session",
         { userId: user._id, planName: plan }
       );
     window.location.href = res.data.url; 
@@ -43,7 +43,7 @@ export default function Pricing() {
             <h2 className="text-xl font-bold mb-2">{plan} Plan</h2>
             <p className="mb-4">Access all {plan} level lessons.</p>
             <button
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50"
+              className=" bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50"
               onClick={() => handleSubscribe(plan)}
               disabled={subscribing}
             >
