@@ -22,7 +22,7 @@ const allowedOrigins = [
   "http://3.80.76.25"
 ];
 
-app.use(
+app.use( 
   cors({
     origin: function (origin, callback) {
       // allow requests with no origin (like curl, server-to-server)
