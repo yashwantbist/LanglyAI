@@ -8,12 +8,13 @@
     "start": "node --import dotenv/config server.js"
   },
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.1047.0",
     "ajv": "^8.17.1",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.4.2",
     "express": "^4.22.1",
     "express-session": "^1.19.0",
     "form-data": "^4.0.5",

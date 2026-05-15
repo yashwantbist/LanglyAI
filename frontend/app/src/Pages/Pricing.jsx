@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useAuth } from "../Context/AuthContext";
-import axios from "axios";
 import API from "../API/api";
 
 const Plan = ["A1", "A2", "B1", "B2"];

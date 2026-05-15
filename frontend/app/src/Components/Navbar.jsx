@@ -8,7 +8,6 @@ export default function Navbar() {
 
   return (
    <nav className="bg-blue-600 text-white px-6 py-4 flex items-center justify-between">
-  {/* Left: Logo + Home */}
   <div className="flex items-center gap-6">
     <Link to="/dashboard" className="flex items-center gap-2">
       <img src={Langly} alt="Langly AI Logo" className="h-8 w-8" />
@@ -23,7 +22,6 @@ export default function Navbar() {
     </Link>
   </div>
 
-  {/* Right: Navigation */}
   <div className="flex items-center gap-6">
     {/* Pricing */}
     <Link
@@ -33,7 +31,6 @@ export default function Navbar() {
       Pricing
     </Link>
 
-    {/* Levels Dropdown */}
    
 
     {/* Profile / Auth */}

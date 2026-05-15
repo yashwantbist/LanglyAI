@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import API from "../../API/api";
 import { useNavigate } from "react-router-dom";
 
@@ -55,9 +54,10 @@ export default function Login() {
         />
         <button type="submit">Login</button>
       </form>
-      <a href="http://localhost:5000/api/auth/google/" className="btn-google">
+      <a href="http://localhost:5000/api/auth/google" className="btn-google">
         Continue with Google
       </a>
     </div>
   );
+  
 }

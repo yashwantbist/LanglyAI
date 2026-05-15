@@ -21,12 +21,12 @@ export default function Dashboard() {
   const [lessons, setLessons] = useState([]);
   const [completedDays, setCompletedDays] = useState([]);
 
-  // ✅ Sync currentLevel from URL or user
+  //Sync currentLevel from URL or user
   useEffect(() => {
     const levelFromUrl = searchParams.get("level");
     const fallback = user?.currentLevel || "A1";
     setCurrentLevel((levelFromUrl || fallback).toUpperCase());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [user]);
 
 useEffect(() => {
@@ -36,7 +36,6 @@ useEffect(() => {
   (async () => {
     try {
       await API.get(`/api/stripe/sync?session_id=${sessionId}`);
-      // now refetch subscription plan
       const res = await API.get(`/api/stripe/${user._id}`);
       setSubscriptionPlan((res.data?.plan || "FREE").toUpperCase());
     } catch (e) {
@@ -45,7 +44,7 @@ useEffect(() => {
   })();
 }, [searchParams, user]);
 
-  // ✅ Fetch subscription plan
+  // Fetch subscription plan
   useEffect(() => {
     if (!user) return;
 
@@ -62,7 +61,7 @@ useEffect(() => {
     fetchSub();
   }, [user]);
 
-  // ✅ Fetch lessons by level
+  // Fetch lessons by level
   useEffect(() => {
     if (!currentLevel) return;
 
@@ -79,7 +78,7 @@ useEffect(() => {
     fetchLessons();
   }, [currentLevel]);
 
-  // ✅ Fetch completed lessons
+  //  Fetch completed lessons
   useEffect(() => {
     if (!user || !currentLevel) return;
 
@@ -105,7 +104,7 @@ useEffect(() => {
     const locked = !canAccessLevel(subscriptionPlan, target);
 
     if (locked) {
-      alert("🔒 This level is locked. Please subscribe to access it.");
+      alert(" This level is locked. Please subscribe to access it.");
       navigate("/pricing");
       return;
     }
@@ -184,25 +183,25 @@ useEffect(() => {
                   lesson={lesson}
                   completed={completed}
                   locked={!canAccessLevel(subscriptionPlan, lesson.level)}
- onAction={() => {
-    const canStart = canAccessLevel(subscriptionPlan, lesson.level);
+                  onAction={() => {
+                    const canStart = canAccessLevel(
+                      subscriptionPlan,
+                      lesson.level,
+                    );
 
-    if (!canStart) {
-      // 🔒 PREVIEW behavior
-      alert(
-        `👀 Preview\n\n${lesson.title}\nDay ${lesson.dayNumber}\n\nSubscribe to unlock full lesson.`
-      );
-      navigate("/pricing");
-      return;
-    }
+                    if (!canStart) {
+                      //  PREVIEW behavior
+                      alert(
+                        `👀 Preview\n\n${lesson.title}\nDay ${lesson.dayNumber}\n\nSubscribe to unlock full lesson.`,
+                      );
+                      navigate("/pricing");
+                      return;
+                    }
 
-    // ▶ START / REVIEW behavior
-    navigate(`/lessons/${lesson.level}/${lesson.dayNumber}`);
-  }}
-                  
-                  
-                  
-                  />
+                    //  START / REVIEW behavior
+                    navigate(`/lessons/${lesson.level}/${lesson.dayNumber}`);
+                  }}
+                />
               );
             })}
           </div>

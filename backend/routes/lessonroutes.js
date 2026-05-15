@@ -1,4 +1,6 @@
 import express from "express";
+import dotenv from "dotenv";
+dotenv.config();
 import OpenAI from "openai";
 import Ajv from "ajv";
 
@@ -13,7 +15,7 @@ import { requireLevelAccess } from "../middleware/requireSubscription.js";
 const router = express.Router();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const PROMPT_VERSION = 2; // ✅ only here
+const PROMPT_VERSION = 2; 
 
 // AJV validator
 const ajv = new Ajv({ allErrors: true });
@@ -76,7 +78,7 @@ router.get("/:level/:dayNumber",requireLevelAccess, async (req, res) => {
       lesson = await Lessonai.create({ level, dayNumber: day, title });
     }
 
-    // ✅ needsGen checks renderMarkdown + promptVersion
+    // needsGen checks renderMarkdown + promptVersion
     const needsGen =
       !lesson.aiContent?.renderMarkdown?.fr ||
       !lesson.aiContent?.renderMarkdown?.en ||
