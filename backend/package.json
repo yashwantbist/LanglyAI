@@ -8,8 +8,9 @@
     "start": "node --import dotenv/config server.js"
   },
   "dependencies": {
-    "@aws-sdk/client-ses": "^3.1047.0",
+    "@aws-sdk/client-ses": "^3.1048.0",
     "ajv": "^8.17.1",
+    "aws-sdk": "^2.1693.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
@@ -22,6 +23,7 @@
     "mongoose": "^8.21.1",
     "multer": "^2.0.2",
     "node-fetch": "^3.3.2",
+    "nodemailer": "^8.0.7",
     "openai": "^6.16.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",

@@ -54,6 +54,11 @@ export default function Login() {
         />
         <button type="submit">Login</button>
       </form>
+      <p>
+  <a href="/forgot-password">
+    Forgot Password?
+  </a>
+</p>
       <a href="http://localhost:5000/api/auth/google" className="btn-google">
         Continue with Google
       </a>

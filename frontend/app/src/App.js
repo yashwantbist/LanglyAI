@@ -7,6 +7,8 @@ import LoginPage from "./Pages/LoginPage";
 import LessonPage from "./Pages/Lesson";
 import LessonCard from "./Components/LessonCard";
 import OAuthSuccess from "./Pages/OAuthSuccess";
+import ForgotPassword from "./Components/Home/ForgotPassword";
+import ResetPassword from "./Components/Home/ResetPassword";
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -24,7 +26,15 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/oauth-success" element={<OAuthSuccess />} />
+<Route
+  path="/forgot-password"
+  element={<ForgotPassword />}
+/>
 
+<Route
+  path="/reset-password/:token"
+  element={<ResetPassword />}
+/>
           <Route
             path="/dashboard"
             element={
