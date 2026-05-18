@@ -28,6 +28,17 @@ jobs:
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/langlyai-frontend:latest ./frontend/app
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/langlyai-frontend:latest
 
+      #  COPY DOCKER COMPOSE TO EC2 (IMPORTANT FIX)
+      - name: Copy compose file to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "docker-compose.prod.yml"
+          target: "~/langlyai/"
+
+      #  DEPLOY ON EC2
       - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -37,13 +48,14 @@ jobs:
           script: |
             set -e
 
+            mkdir -p ~/langlyai
             cd ~/langlyai
 
-            # Pull latest images from Docker Hub
+            echo "Pulling latest images..."
             docker compose -f docker-compose.prod.yml pull
 
-            # Restart containers with new images
+            echo "Restarting containers..."
             docker compose -f docker-compose.prod.yml up -d --remove-orphans
 
-            # Cleanup old images
+            echo "Cleaning old images..."
             docker image prune -af
