@@ -17,9 +17,10 @@ import "./config/passport.js";
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:3000",
-    "http://localhost:5173",
-  "http://3.80.76.25"
+   "http://localhost:3000",
+  "http://localhost:5173",
+  "https://langlyai.com",
+  "https://www.langlyai.com",
 ];
 
 app.use( 
