@@ -14,7 +14,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const res = await API.post(
-        "/api/auth/login",
+        "/api/auth/",
         formData,
         { withCredentials: true }
       );

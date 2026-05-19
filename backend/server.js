@@ -20,6 +20,7 @@ const allowedOrigins = [
    "http://localhost:3000",
   "http://localhost:5173",
   "https://langlyai.com",
+  "http://13.222.127.177", 
   "https://www.langlyai.com",
 ];
 
