@@ -24,7 +24,7 @@ export default function Login() {
       localStorage.setItem("userId", user.id);
       localStorage.setItem("username", user.name);
 
-      navigate("/pricing");
+      navigate("/dashboard");
     } catch (err) {
       alert("Invalid email or password");
     }
