@@ -4,3 +4,6 @@ build
 .vite
 .git
 .env
+npm-debug.log
+Dockerfile
+docker-compose.yml
