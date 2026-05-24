@@ -9,7 +9,7 @@ export default function OAuthSuccess() {
     const token = new URLSearchParams(location.search).get("token");
     if (token) {
       localStorage.setItem("token", token);
-      navigate("/pricing");
+      navigate("/dashboard");
     } else {
       navigate("/login");
     }

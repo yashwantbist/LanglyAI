@@ -59,6 +59,33 @@ router.post("/progress", async (req, res) => {
 
   res.json(progress);
 });
+// ONE-TIME SEED + CLEANUP — run once then remove
+router.get("/seed", async (req, res) => {
+  try {
+    // Step 1: delete all stub docs with auto-generated titles
+    const deleted = await Lessonai.deleteMany({
+      title: /^Lesson \d+ for /,
+    });
+
+    // Step 2: upsert all 120 real lessons from lessonsData
+    const ops = lessonsData.map((l) => ({
+      updateOne: {
+        filter: { level: l.level, dayNumber: l.dayNumber },
+        update: { $setOnInsert: { level: l.level, dayNumber: l.dayNumber, title: l.title } },
+        upsert: true,
+      },
+    }));
+    const result = await Lessonai.bulkWrite(ops);
+
+    res.json({
+      deletedStubs: deleted.deletedCount,
+      upserted: result.upsertedCount,
+      matched: result.matchedCount,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 // get lesson by level + day
 router.get("/:level/:dayNumber",requireLevelAccess, async (req, res) => {
@@ -73,10 +100,19 @@ router.get("/:level/:dayNumber",requireLevelAccess, async (req, res) => {
     let lesson = await Lessonai.findOne({ level, dayNumber: day });
 
     if (!lesson) {
-      const meta = lessonsData.find((l) => l.level === level && l.dayNumber === day);
-      const title = meta?.title || `Lesson ${day} for ${level}`;
-      lesson = await Lessonai.create({ level, dayNumber: day, title });
+      const meta = lessonsData.find(
+        (l) => l.level === level && l.dayNumber === day
+      );
+      if (!meta) {
+        return res.status(404).json({ message: "Lesson not found in curriculum" });
+      }
+      lesson = await Lessonai.create({
+        level,
+        dayNumber: day,
+        title: meta.title,
+      });
     }
+
 
     // needsGen checks renderMarkdown + promptVersion
     const needsGen =

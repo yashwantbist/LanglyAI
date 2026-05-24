@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import "./App.css";
 import { AuthProvider, useAuth } from "./Context/AuthContext";
 import Dashboard from "./Pages/Dashboard";
@@ -26,15 +31,9 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/oauth-success" element={<OAuthSuccess />} />
-<Route
-  path="/forgot-password"
-  element={<ForgotPassword />}
-/>
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
-<Route
-  path="/reset-password/:token"
-  element={<ResetPassword />}
-/>
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route
             path="/dashboard"
             element={
@@ -43,23 +42,23 @@ function App() {
               </ProtectedRoute>
             }
           />
-<Route
-  path="/lessons/:level"
-  element={
-    <ProtectedRoute>
-      <LessonPage />
-    </ProtectedRoute>
-  }
-/>
+          <Route
+            path="/lessons/:level"
+            element={
+              <ProtectedRoute>
+                <LessonPage />
+              </ProtectedRoute>
+            }
+          />
 
-<Route
-  path="/lessons/:level/:dayNumber"
-  element={
-    <ProtectedRoute>
-      <LessonCard />
-    </ProtectedRoute>
-  }
-/>
+          <Route
+            path="/lessons/:level/:dayNumber"
+            element={
+              <ProtectedRoute>
+                <LessonCard />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/pricing"
@@ -69,7 +68,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          
         </Routes>
       </Router>
     </AuthProvider>
