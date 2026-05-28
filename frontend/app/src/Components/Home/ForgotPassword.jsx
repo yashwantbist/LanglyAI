@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState } from "react"
+import "../../App.css";
 import API from "../../API/api";
 
 export default function ForgotPassword() {

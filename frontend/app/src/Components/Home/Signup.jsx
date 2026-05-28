@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../API/api";
+import "../../App.css";
 
 export default function Signup() {
   const [formData, setformData] = useState({

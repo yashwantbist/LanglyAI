@@ -39,3 +39,632 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* =========================
+   LANGLYAI AUTH STYLES
+   Modern French Learning UI
+========================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #0f172a, #1e293b, #312e81);
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  color: white;
+}
+
+/* Shared Auth Container */
+.login,
+.signup,
+.forgot-password,
+.reset-password {
+  width: 100%;
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 40px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.3),
+    0 0 80px rgba(99, 102, 241, 0.2);
+  animation: fadeIn 0.5s ease;
+}
+
+/* Title */
+.login h2,
+.signup h2,
+.forgot-password h2,
+.reset-password h2 {
+  text-align: center;
+  margin-bottom: 28px;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #ffffff, #c7d2fe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Form */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Inputs */
+input {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.08);
+  color: white;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+input:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 4px rgba(129,140,248,0.25);
+  background: rgba(255,255,255,0.12);
+}
+
+/* Buttons */
+button {
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(99,102,241,0.4);
+}
+
+/* Google Button */
+.btn-google {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 18px;
+  text-decoration: none;
+  padding: 14px;
+  border-radius: 14px;
+  background: white;
+  color: #111827;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-google:hover {
+  background: #f3f4f6;
+  transform: translateY(-2px);
+}
+
+/* Links */
+a {
+  color: #c7d2fe;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: white;
+}
+
+/* Paragraph */
+p {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Optional French Learning Badge */
+.login::before,
+.signup::before,
+.forgot-password::before,
+.reset-password::before {
+  content: "🇫🇷 LanglyAI";
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #c7d2fe;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+/* Smooth Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 500px) {
+  .login,
+  .signup,
+  .forgot-password,
+  .reset-password {
+    margin: 20px;
+    padding: 28px;
+  }
+
+  h2 {
+    font-size: 1.7rem;
+  }
+}
+/* =========================================
+   LANGLY AI — MODERN UI THEME
+   Glassmorphism + Animations + Learning App
+========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg: #0f172a;
+  --card: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.12);
+  --primary: #6366f1;
+  --secondary: #8b5cf6;
+  --accent: #22c55e;
+  --text: #f8fafc;
+  --muted: #cbd5e1;
+  --danger: #ef4444;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:"Inter",sans-serif;
+  background:
+    radial-gradient(circle at top left,#312e81 0%,transparent 35%),
+    radial-gradient(circle at bottom right,#0ea5e9 0%,transparent 30%),
+    linear-gradient(135deg,#020617,#0f172a,#111827);
+  min-height:100vh;
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* Smooth page fade */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    url("https://www.transparenttextures.com/patterns/cubes.png");
+  opacity:.03;
+  pointer-events:none;
+}
+
+/* ====================================
+   NAVBAR
+==================================== */
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:999;
+  backdrop-filter: blur(16px);
+  background:rgba(15,23,42,.75) !important;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+nav a,
+nav button{
+  transition:.3s ease;
+}
+
+nav a:hover,
+nav button:hover{
+  transform:translateY(-2px);
+}
+
+/* ====================================
+   MAIN CONTAINERS
+==================================== */
+
+.max-w-6xl,
+.max-w-5xl,
+.max-w-4xl,
+.max-w-3xl{
+  animation:fadeUp .7s ease;
+}
+
+/* ====================================
+   LESSON / DASHBOARD CARDS
+==================================== */
+
+.border,
+.shadow,
+.rounded-xl,
+.rounded-lg{
+  border-color:rgba(255,255,255,.08) !important;
+}
+
+.bg-white,
+.bg-gray-50,
+.bg-gray-100{
+  background:rgba(255,255,255,.06) !important;
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+
+.shadow,
+.shadow-md{
+  box-shadow:
+    0 8px 30px rgba(0,0,0,.25),
+    0 0 20px rgba(99,102,241,.08);
+}
+
+/* Lesson Preview Card */
+.relative.border.rounded-lg{
+  position:relative;
+  overflow:hidden;
+  transition:.35s ease;
+}
+
+.relative.border.rounded-lg::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    135deg,
+    rgba(99,102,241,.15),
+    rgba(139,92,246,.1)
+  );
+  opacity:0;
+  transition:.4s;
+}
+
+.relative.border.rounded-lg:hover::before{
+  opacity:1;
+}
+
+.relative.border.rounded-lg:hover{
+  transform:translateY(-6px) scale(1.01);
+  box-shadow:
+    0 12px 40px rgba(0,0,0,.35),
+    0 0 30px rgba(99,102,241,.18);
+}
+
+/* ====================================
+   BUTTONS
+==================================== */
+
+button{
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  transition:all .3s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+button::after{
+  content:"";
+  position:absolute;
+  width:0;
+  height:0;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  border-radius:999px;
+  background:rgba(255,255,255,.25);
+  transition:.5s;
+}
+
+button:hover::after{
+  width:300px;
+  height:300px;
+}
+
+button:hover{
+  transform:translateY(-2px);
+}
+
+/* Primary Buttons */
+.bg-blue-600{
+  background:linear-gradient(135deg,#4f46e5,#7c3aed) !important;
+}
+
+.bg-green-600{
+  background:linear-gradient(135deg,#16a34a,#22c55e) !important;
+}
+
+.bg-purple-600{
+  background:linear-gradient(135deg,#7c3aed,#9333ea) !important;
+}
+
+.bg-red-600{
+  background:linear-gradient(135deg,#dc2626,#ef4444) !important;
+}
+
+.bg-gray-900{
+  background:linear-gradient(135deg,#111827,#1f2937) !important;
+}
+
+/* ====================================
+   HEADINGS
+==================================== */
+
+h1,h2,h3,h4{
+  color:white;
+}
+
+h1{
+  font-size:2.5rem;
+  font-weight:800;
+  background:linear-gradient(to right,#fff,#c7d2fe);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+h2{
+  font-size:2rem;
+}
+
+h3{
+  color:#e2e8f0;
+}
+
+.text-gray-600,
+.text-gray-700,
+.text-gray-800,
+.text-gray-500{
+  color:#cbd5e1 !important;
+}
+
+/* ====================================
+   PROGRESS BAR
+==================================== */
+
+.bg-green-500{
+  background:linear-gradient(90deg,#22c55e,#4ade80) !important;
+  box-shadow:0 0 14px rgba(34,197,94,.6);
+}
+
+.h-3{
+  height:12px !important;
+}
+
+/* ====================================
+   LESSON MARKDOWN
+==================================== */
+
+.prose{
+  color:#f8fafc;
+}
+
+.prose h1,
+.prose h2,
+.prose h3{
+  color:white;
+  margin-top:1rem;
+}
+
+.prose strong{
+  color:#c4b5fd;
+}
+
+.prose code{
+  background:rgba(255,255,255,.08);
+  padding:2px 6px;
+  border-radius:6px;
+  color:#93c5fd;
+}
+
+.prose table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:1rem;
+}
+
+.prose th,
+.prose td{
+  border:1px solid rgba(255,255,255,.12);
+  padding:10px;
+}
+
+.prose tr:nth-child(even){
+  background:rgba(255,255,255,.03);
+}
+
+/* ====================================
+   SELECT + INPUTS
+==================================== */
+
+select,
+input{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.1);
+  color:white;
+  border-radius:12px;
+  padding:10px 14px;
+  outline:none;
+  transition:.3s;
+}
+
+select:focus,
+input:focus{
+  border-color:#818cf8;
+  box-shadow:0 0 0 4px rgba(99,102,241,.2);
+}
+
+/* ====================================
+   SPEAKING OUTPUT
+==================================== */
+
+.bg-gray-100.rounded{
+  border-left:4px solid #22c55e;
+}
+
+/* ====================================
+   LOCKED CARD EFFECT
+==================================== */
+
+.absolute.inset-0{
+  backdrop-filter:blur(4px);
+}
+
+/* ====================================
+   FLOATING ANIMATIONS
+==================================== */
+
+@keyframes float {
+  0%{
+    transform:translateY(0px);
+  }
+  50%{
+    transform:translateY(-8px);
+  }
+  100%{
+    transform:translateY(0px);
+  }
+}
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(30px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.p-4.border.rounded-xl,
+.p-4.bg-gray-50.rounded-lg{
+  animation:float 5s ease-in-out infinite;
+}
+
+/* ====================================
+   SCROLLBAR
+==================================== */
+
+::-webkit-scrollbar{
+  width:10px;
+}
+
+::-webkit-scrollbar-track{
+  background:#0f172a;
+}
+
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(#6366f1,#8b5cf6);
+  border-radius:999px;
+}
+
+/* ====================================
+   MOBILE
+==================================== */
+
+@media(max-width:768px){
+
+  h1{
+    font-size:2rem;
+  }
+
+  h2{
+    font-size:1.6rem;
+  }
+
+  .max-w-6xl,
+  .max-w-5xl,
+  .max-w-4xl,
+  .max-w-3xl{
+    padding:1rem !important;
+  }
+
+  nav{
+    padding:14px 18px !important;
+  }
+}
+
+/* ====================================
+   BONUS LEARNING APP EFFECTS
+==================================== */
+
+/* Streak Glow */
+.streak-fire{
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{
+    transform:scale(1);
+    opacity:1;
+  }
+  50%{
+    transform:scale(1.08);
+    opacity:.85;
+  }
+  100%{
+    transform:scale(1);
+    opacity:1;
+  }
+}
+
+/* XP Badge */
+.xp-badge{
+  background:linear-gradient(135deg,#f59e0b,#f97316);
+  color:white;
+  padding:6px 12px;
+  border-radius:999px;
+  font-weight:700;
+  box-shadow:0 0 20px rgba(249,115,22,.35);
+}
+
+/* AI Glow Card */
+.ai-card{
+  position:relative;
+}
+
+.ai-card::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  background:linear-gradient(
+    45deg,
+    #6366f1,
+    #8b5cf6,
+    #06b6d4,
+    #6366f1
+  );
+  z-index:-1;
+  border-radius:inherit;
+  filter:blur(20px);
+  opacity:.25;
+}
