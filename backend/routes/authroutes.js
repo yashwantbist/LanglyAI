@@ -144,28 +144,67 @@ router.post("/forgot-password", async (req, res) => {
     });
   }
 });
-router.post("/reset-password/:token", async (req, res) => {
+router.post("/change-password", async (req, res) => {
   try {
     const { token } = req.params;
     const { password } = req.body;
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    );
+    if (!password || password.length < 8) {
+      return res.status(400).json({
+        message: "Password must be at least 8 characters",
+      });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await User.findByIdAndUpdate(decoded.id, {
-      password: hashedPassword,
-    });
+    user.password = hashedPassword;
+    await user.save();
 
     res.json({
       message: "Password reset successful",
     });
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Invalid or expired token",
+    });
+  }
+});
+router.put("/change-password", authenticate, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await User.findById(req.user._id).select("+password");
+
+    const isMatch = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Current password is incorrect",
+      });
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+
+    res.json({
+      message: "Password updated successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Server error",
     });
   }
 });

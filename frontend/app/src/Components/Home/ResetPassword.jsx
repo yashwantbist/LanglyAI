@@ -1,47 +1,57 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import API from "../../API/api";
-import "../../App.css";
 
-
-export default function ResetPassword() {
-  const { token } = useParams();
-  const navigate = useNavigate();
-
-  const [password, setPassword] = useState("");
+export default function ChangePassword() {
+  const [form, setForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await API.post(
-        `/api/auth/reset-password/${token}`,
-        { password }
-      );
+    if (form.newPassword !== form.confirmPassword) {
+      return alert("Passwords do not match");
+    }
 
+    try {
+      const res = await API.post("/change-password", form);
       alert(res.data.message);
-      navigate("/login");
     } catch (err) {
-      alert("Invalid or expired token");
+      alert(err.response?.data?.message);
     }
   };
 
   return (
-    <div className="reset-password">
-      <h2>Reset Password</h2>
+    <div className="min-h-screen flex justify-center items-center">
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <input
+          type="password"
+          placeholder="Current Password"
+          onChange={(e) =>
+            setForm({ ...form, currentPassword: e.target.value })
+          }
+        />
 
-      <form onSubmit={handleSubmit}>
         <input
           type="password"
           placeholder="New Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          onChange={(e) =>
+            setForm({ ...form, newPassword: e.target.value })
+          }
         />
 
-        <button type="submit">Reset Password</button>
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          onChange={(e) =>
+            setForm({ ...form, confirmPassword: e.target.value })
+          }
+        />
+
+        <button type="submit">Update Password</button>
       </form>
     </div>
   );
 }
-

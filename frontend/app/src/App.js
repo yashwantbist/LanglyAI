@@ -13,7 +13,7 @@ import LessonPage from "./Pages/Lesson";
 import LessonCard from "./Components/LessonCard";
 import OAuthSuccess from "./Pages/OAuthSuccess";
 import ForgotPassword from "./Components/Home/ForgotPassword";
-import ResetPassword from "./Components/Home/ResetPassword";
+import ChangePassword from "./Components/Home/ResetPassword";
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -33,7 +33,7 @@ function App() {
           <Route path="/oauth-success" element={<OAuthSuccess />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
-          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/reset-password/:token" element={<ChangePassword />} />
           <Route
             path="/dashboard"
             element={
