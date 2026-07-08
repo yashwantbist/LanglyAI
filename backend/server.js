@@ -17,10 +17,15 @@ import "./config/passport.js";
 const app = express();
 
 const allowedOrigins = [
-   "http://localhost:3000",
+  "http://localhost:3000",
   "http://localhost:5173",
+
+  "http://34.227.205.168",
+  "https://34.227.205.168",
+
+  "http://langlyai.com",
   "https://langlyai.com",
-  "http://13.222.127.177", 
+  "http://www.langlyai.com",
   "https://www.langlyai.com",
 ];
 
@@ -76,6 +81,6 @@ connectDB();
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🔥 Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
 
