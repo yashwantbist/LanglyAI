@@ -1,0 +1,17 @@
+name: Monitor LanglyAI
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check frontend
+        run: curl -f https://langlyai.com/health
+
+      - name: Check backend
+        run: curl -f https://langlyai.com/api/health

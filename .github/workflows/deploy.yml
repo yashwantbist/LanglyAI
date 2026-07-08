@@ -1,12 +1,17 @@
-name: LanglyAI Deploy 
+name: Build and Deploy LanglyAI
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+
+env:
+  BACKEND_IMAGE: langlyai-backend
+  FRONTEND_IMAGE: langlyai-frontend
 
 jobs:
-  deploy:
-    runs-on: self-hosted
+  build-and-push:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
@@ -18,17 +23,24 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build & push backend image
+      - name: Build and push backend image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/langlyai-backend:latest ./backend
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/langlyai-backend:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.BACKEND_IMAGE }}:latest ./backend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.BACKEND_IMAGE }}:latest
 
-      - name: Build & push frontend image
+      - name: Build and push frontend image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/langlyai-frontend:latest ./frontend/app
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/langlyai-frontend:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.FRONTEND_IMAGE }}:latest ./frontend/app
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.FRONTEND_IMAGE }}:latest
 
-      #  COPY DOCKER COMPOSE TO EC2 (IMPORTANT FIX)
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Copy compose file to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -38,24 +50,37 @@ jobs:
           source: "docker-compose.yml"
           target: "~/langlyai/"
 
-      #  DEPLOY ON EC2
       - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          envs: DOCKERHUB_USERNAME
           script: |
             set -e
 
-            mkdir -p ~/langlyai
+            mkdir -p ~/langlyai/backend
             cd ~/langlyai
 
+            echo "DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME" > .env
+
             echo "Pulling latest images..."
-            docker compose -f docker-compose.yml pull
+            docker compose --env-file .env pull
 
             echo "Restarting containers..."
-            docker compose -f docker-compose.yml up -d --remove-orphans
+            docker compose --env-file .env up -d --remove-orphans
 
-            echo "Cleaning old images..."
+            echo "Container status:"
+            docker ps
+
+            echo "Testing backend health..."
+            curl -f http://localhost:5000/api/health
+
+            echo "Testing frontend health..."
+            curl -f http://localhost/health
+
+            echo "Cleaning old Docker images..."
             docker image prune -af
