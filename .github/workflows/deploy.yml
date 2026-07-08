@@ -1,4 +1,4 @@
-name: LanglyAI Deploy (Docker -> EC2)
+name: LanglyAI Deploy 
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repo
