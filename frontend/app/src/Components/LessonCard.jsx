@@ -53,7 +53,7 @@ export default function LessonCard() {
     try {
       stopTTS();
       const res = await API.post(
-        "/api/voice/tts",
+        "/voice/tts",
         { text: clean },
         { responseType: "blob" }
       );
@@ -128,7 +128,7 @@ export default function LessonCard() {
           const form = new FormData();
           form.append("audio", blob, "speech.webm");
 
-          const res = await API.post("/api/voice/stt", form);
+          const res = await API.post("/voice/stt", form);
           setSpokenText(res.data?.text || "");
         } catch (err) {
           console.error("STT failed:", err?.response?.data || err);
@@ -156,7 +156,7 @@ export default function LessonCard() {
     const fetchLevelLessons = async () => {
       if (!level) return;
       try {
-        const res = await API.get(`/api/lessons/${level}`);
+        const res = await API.get(`/lessons/${level}`);
         const sorted = [...(res.data || [])].sort((a, b) => a.dayNumber - b.dayNumber);
         setLevelLessons(sorted);
       } catch (err) {
@@ -174,7 +174,7 @@ export default function LessonCard() {
       setLoading(true);
       try {
         const res = await API.get(
-          `/api/lessons/${level}/${dayNumber}?userId=${userId}`
+          `/lessons/${level}/${dayNumber}?userId=${userId}`
         );
         setLesson(res.data);
       } catch (err) {
@@ -199,7 +199,7 @@ export default function LessonCard() {
 
   const markComplete = async () => {
     try {
-      await API.post("/api/lessons/progress", {
+      await API.post("/lessons/progress", {
         userId: user?._id,
         level,
         dayNumber: Number(dayNumber),
@@ -477,3 +477,4 @@ export default function LessonCard() {
     </div>
   );
 }
+

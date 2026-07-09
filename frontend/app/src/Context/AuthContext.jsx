@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      API.get("/api/auth/me", {
+      API.get("/auth/me", {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((res) => setUser(res.data))
@@ -47,3 +47,4 @@ export const AuthProvider = ({ children }) => {
 
 // Custom hook for easier access
 export const useAuth = () => useContext(AuthContext);
+

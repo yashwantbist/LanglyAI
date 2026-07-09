@@ -24,7 +24,7 @@ export default function LessonDetail() {
   useEffect(() => {
     const fetchLesson = async () => {
       try {
-        const res = await API.get(`/api/lessons/${level}/${dayNumber}`);
+        const res = await API.get(`/lessons/${level}/${dayNumber}`);
         setLesson(res.data);
       } catch (err) {
         console.error("Failed to fetch lesson:", err);
@@ -86,7 +86,7 @@ export default function LessonDetail() {
 
   const markComplete = async () => {
     try {
-      await API.post("/api/lessons/progress", {
+      await API.post("/lessons/progress", {
         userId: user._id,
         level,
         dayNumber: Number(dayNumber),

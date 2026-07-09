@@ -15,7 +15,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const res = await API.post(
-        "/api/auth/login",
+        "/auth/login",
         formData,
         { withCredentials: true }
       );
@@ -60,10 +60,11 @@ export default function Login() {
     Forgot Password?
   </a>
 </p>
-      <a href="http://localhost:5000/api/auth/google" className="btn-google">
+      <a href="/api/auth/google" className="btn-google">
         Continue with Google
       </a>
     </div>
   );
   
 }
+

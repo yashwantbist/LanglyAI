@@ -20,7 +20,7 @@ export default function Signup() {
     e.preventDefault();
     try {
       await API.post(
-        "/api/auth/signup",
+        "/auth/signup",
         formData,
         { withCredentials: true }
       );
@@ -68,3 +68,4 @@ export default function Signup() {
     </div>
   );
 }
+

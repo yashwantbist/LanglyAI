@@ -19,7 +19,7 @@ export default function Pricing() {
 
     try {
       const res = await API.post(
-        "/api/stripe/create-checkout-session",
+        "/stripe/create-checkout-session",
         { userId: user._id, planName: plan }
       );
     window.location.href = res.data.url; 
@@ -54,3 +54,4 @@ export default function Pricing() {
     </div>
   );
 }
+

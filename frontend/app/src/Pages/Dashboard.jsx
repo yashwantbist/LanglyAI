@@ -35,8 +35,8 @@ useEffect(() => {
 
   (async () => {
     try {
-      await API.get(`/api/stripe/sync?session_id=${sessionId}`);
-      const res = await API.get(`/api/stripe/${user._id}`);
+      await API.get(`/stripe/sync?session_id=${sessionId}`);
+      const res = await API.get(`/stripe/${user._id}`);
       setSubscriptionPlan((res.data?.plan || "FREE").toUpperCase());
     } catch (e) {
       console.error("Sync failed:", e?.response?.data || e.message);
@@ -50,7 +50,7 @@ useEffect(() => {
 
     const fetchSub = async () => {
       try {
-        const res = await API.get(`/api/stripe/${user._id}`);
+        const res = await API.get(`/stripe/${user._id}`);
         setSubscriptionPlan((res.data?.plan || "FREE").toUpperCase());
       } catch (e) {
         console.error("Failed to fetch subscription:", e?.response?.data || e.message);
@@ -67,7 +67,7 @@ useEffect(() => {
 
     const fetchLessons = async () => {
       try {
-        const res = await API.get(`/api/lessons/${currentLevel}`);
+        const res = await API.get(`/lessons/${currentLevel}`);
         setLessons(res.data);
       } catch (e) {
         console.error("Failed to fetch lessons:", e?.response?.data || e.message);
@@ -84,7 +84,7 @@ useEffect(() => {
 
     const fetchProgress = async () => {
       try {
-        const res = await API.get(`/api/lessons/progress/${user._id}?level=${currentLevel}`);
+        const res = await API.get(`/lessons/progress/${user._id}?level=${currentLevel}`);
         setCompletedDays(res.data.map((p) => p.dayNumber));
       } catch (e) {
         console.error("Failed to fetch progress:", e?.response?.data || e.message);
@@ -210,3 +210,4 @@ useEffect(() => {
     </>
   );
 }
+
