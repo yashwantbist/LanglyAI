@@ -29,11 +29,12 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
+          <Route path="/" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/oauth-success" element={<OAuthSuccess />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-
           <Route path="/reset-password/:token" element={<ChangePassword />} />
+
           <Route
             path="/dashboard"
             element={
@@ -42,6 +43,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/lessons/:level"
             element={
@@ -68,6 +70,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>
     </AuthProvider>
