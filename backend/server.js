@@ -7,7 +7,9 @@ import cors from "cors";
 import connectDB from "./config/database.js";
 import authRoutes from "./routes/authroutes.js";
 import lessonroutes from "./routes/lessonroutes.js";
-import stripeRoutes from "./routes/striperoutes.js";
+import stripeRoutes, {
+  stripeWebhook,
+} from "./routes/striperoutes.js";
 import voiceRoutes from "./routes/voiceroutes.js";
 import translateRoutes from "./routes/translateroutes.js";
 
@@ -44,12 +46,23 @@ app.use(
 );
 
 //  Webhook must be raw + must be a real handler
+app.post(
+  "/api/stripe/webhook",
+  express.raw({
+    type: "application/json",
+  }),
+  stripeWebhook,
+);
 app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
 
 //  Normal JSON middleware AFTER Stripe
 app.use(express.json());
-app.use("/api/stripe", stripeRoutes);
-
+app.use(
+  "/api/stripe/webhook",
+  express.raw({
+    type: "application/json",
+  }),
+);
 // session
 app.use(
   session({
