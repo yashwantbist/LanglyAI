@@ -1,4 +1,4 @@
-// routes/striperoutes.js
+import "dotenv/config";
 import express from "express";
 import Stripe from "stripe";
 import User from "../models/User.js";
@@ -6,8 +6,33 @@ import Subscription from "../models/Subscription.js";
 import Plan from "../models/Plan.js";
 
 const router = express.Router();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+const requireEnv = (name) => {
+  const value = process.env[name]?.trim();
+
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+
+  return value;
+};
+
+const stripe = new Stripe(requireEnv("STRIPE_SECRET_KEY"));
+
+const getFrontendUrl = () => {
+  const frontendUrl = requireEnv("FRONTEND_URL").replace(/\/+$/, "");
+
+  if (
+    process.env.NODE_ENV === "production" &&
+    /localhost|127\.0\.0\.1/i.test(frontendUrl)
+  ) {
+    throw new Error(
+      `Invalid production FRONTEND_URL: ${frontendUrl}`,
+    );
+  }
+
+  return frontendUrl;
+};
 //  helper: avoid Invalid Date
 const toDate = (unixSeconds) => {
   const n = Number(unixSeconds);
@@ -64,13 +89,31 @@ router.get("/sync", async (req, res) => {
 //  3) Create checkout session
 router.post("/create-checkout-session", async (req, res) => {
   const { userId, planName } = req.body || {};
+
   if (!userId || !planName) {
-    return res.status(400).json({ message: "Missing userId or planName" });
+    return res.status(400).json({
+      message: "Missing userId or planName",
+    });
   }
 
   try {
     const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const plan = await Plan.findOne({
+      name: planName.toUpperCase(),
+    });
+
+    if (!plan?.stripePriceId) {
+      return res.status(404).json({
+        message: "Plan not found or missing stripePriceId",
+      });
+    }
 
     let stripeCustomerId = user.stripeCustomerId;
 
@@ -78,36 +121,82 @@ router.post("/create-checkout-session", async (req, res) => {
       const customer = await stripe.customers.create({
         email: user.email,
         name: user.name,
+        metadata: {
+          userId: user._id.toString(),
+        },
       });
+
       stripeCustomerId = customer.id;
-      user.stripeCustomerId = stripeCustomerId;
+      user.stripeCustomerId = customer.id;
       await user.save();
     }
 
-    const plan = await Plan.findOne({ name: planName });
-    if (!plan?.stripePriceId) {
-      return res
-        .status(404)
-        .json({ message: "Plan not found or missing stripePriceId" });
-    }
+    const frontendUrl = getFrontendUrl();
+
+    const successUrl =
+      `${frontendUrl}/dashboard?session_id={CHECKOUT_SESSION_ID}`;
+
+    const cancelUrl = `${frontendUrl}/pricing`;
+
+    console.log("Creating Stripe Checkout:", {
+      frontendUrl,
+      successUrl,
+      cancelUrl,
+      planName: plan.name,
+      userId: user._id.toString(),
+    });
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       customer: stripeCustomerId,
-      line_items: [{ price: plan.stripePriceId, quantity: 1 }],
-      success_url: `${process.env.FRONTEND_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.FRONTEND_URL}/pricing`,
+
+      line_items: [
+        {
+          price: plan.stripePriceId,
+          quantity: 1,
+        },
+      ],
+
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+
       client_reference_id: user._id.toString(),
-      metadata: { planName },
+
+      metadata: {
+        userId: user._id.toString(),
+        planName: plan.name,
+      },
+
+      subscription_data: {
+        metadata: {
+          userId: user._id.toString(),
+          planName: plan.name,
+        },
+      },
     });
 
-    return res.json({ url: session.url });
+    console.log("Stripe Checkout created:", {
+      sessionId: session.id,
+      successUrl: session.success_url,
+      checkoutUrl: session.url,
+    });
+
+    return res.status(201).json({
+      url: session.url,
+      sessionId: session.id,
+    });
   } catch (err) {
     console.error("CHECKOUT ERROR:", err);
-    return res.status(500).json({ message: "Stripe checkout failed", error: err.message });
+
+    return res.status(500).json({
+      message: "Stripe checkout failed",
+      error:
+        process.env.NODE_ENV === "production"
+          ? undefined
+          : err.message,
+    });
   }
 });
-
 
 //  4) Webhook (called by Stripe, uses raw body in server.js)
 router.post("/webhook", async (req, res) => {
