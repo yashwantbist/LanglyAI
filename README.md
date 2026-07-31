@@ -8,8 +8,18 @@ LanglyAI combines a structured CEFR-aligned curriculum with AI-generated explana
 
 
 
-Live Demo · Report an Issue · View Source
 
+
+[![Live App](https://img.shields.io/badge/Live%20App-langlyai.com-0A66C2?style=for-the-badge)](https://langlyai.com)
+[![Deployment](https://github.com/yashwantbist/LanglyAI/actions/workflows/deploy.yml/badge.svg)](https://github.com/yashwantbist/LanglyAI/actions/workflows/deploy.yml)
+[![Monitoring](https://github.com/yashwantbist/LanglyAI/actions/workflows/monitor.yml/badge.svg)](https://github.com/yashwantbist/LanglyAI/actions/workflows/monitor.yml)
+
+[Live Demo](https://langlyai.com) · [Report an Issue](https://github.com/yashwantbist/LanglyAI/issues) · [View Source](https://github.com/yashwantbist/LanglyAI)
+
+
+</div>
+
+![LanglyAI dashboard](https://github.com/user-attachments/assets/f89e425a-c392-46e3-9d36-aa6d9d2f300d)
 </div>
 
 
